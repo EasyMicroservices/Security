@@ -39,9 +39,9 @@ namespace EasyMicroservices.Security.Tests.Providers.EncriptionProviders
             var encryptedData = _provider.Encrypt(data, key1);
             //convert to array to can use in lambda expersion
             var arrayByte = encryptedData.ToArray();
-            Assert.ThrowsAny<Exception>(()=> _provider.Decrypt(arrayByte, key2));
             // Assert
-            //Assert.NotEqual(originalDataString, Encoding.UTF8.GetString(decryptedData));
+            Assert.ThrowsAny<CryptographicException>(()=> _provider.Decrypt(arrayByte, key2));         
+           
         }
     }
 }
