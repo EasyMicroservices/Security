@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using EasyMicroservices.Security.Interfaces;
+﻿using EasyMicroservices.Security.Interfaces;
 
-namespace EasyMicroservices.Security.Providers
+namespace EasyMicroservices.Security.Providers.SignatureProviders
 {
-    public abstract class SignAlgorithmBaseProvider : ISignatureAlgorithm
+    public abstract class BaseSignatureAlgorithmProvider : ISignatureAlgorithm
     {
         public virtual ReadOnlySpan<byte> SignData(ReadOnlySpan<byte> data)
         {
