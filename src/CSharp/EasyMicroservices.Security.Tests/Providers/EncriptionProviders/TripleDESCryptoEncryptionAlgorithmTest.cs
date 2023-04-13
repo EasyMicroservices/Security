@@ -1,16 +1,21 @@
 ﻿using EasyMicroservices.Security.Providers.EncriptionProviders;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace EasyMicroservices.Security.Tests.Providers.EncriptionProviders
 {
-    public class AesEncryptionAlgorithmTest : BaseEncryptionAlgorithmProviderTest
+    public class TripleDESCryptoEncryptionAlgorithmTest : BaseEncryptionAlgorithmProviderTest
     {
-        public AesEncryptionAlgorithmTest() : base(new AesEncryptionAlgorithm())
+        public TripleDESCryptoEncryptionAlgorithmTest() : base(new TripleDESCryptoEncryptionAlgorithm())
         {
         }
         [Theory]
-        [InlineData("Hello Easy-MicroService!","MySecurityKey")]
-        [InlineData("سلام ایزی میکروسرویس","کلید امنیتی")]
+        [InlineData("Hello Easy-MicroService!", "MySecurityKey")]
+        [InlineData("سلام ایزی میکروسرویس", "کلید امنیتی")]
         public override void Test_Symmetric_ValidData(string originalDataString, string keyString)
         {
             base.Test_Symmetric_ValidData(originalDataString, keyString);
@@ -21,5 +26,6 @@ namespace EasyMicroservices.Security.Tests.Providers.EncriptionProviders
         {
             base.Test_Symmetric_WithDifferentKey(originalDataString, stringKey1, stringKey2);
         }
+    
     }
 }

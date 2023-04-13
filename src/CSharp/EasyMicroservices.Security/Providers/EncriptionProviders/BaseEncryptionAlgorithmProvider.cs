@@ -11,13 +11,11 @@ namespace EasyMicroservices.Security.Providers.EncriptionProviders
         // iterations must be at least 1000, we will use 2000
         private static readonly int iterations = 2000;
 
-        public (byte[] Key, byte[] Iv) GenerateKeyAndIv(ReadOnlySpan<byte> key)
+        public (byte[] Key, byte[] Iv) GenerateKeyAndIv(ReadOnlySpan<byte> key,int keyByteSize, int IvByteSize)
         {
             using (var pbkdf2 = new Rfc2898DeriveBytes(key.ToArray(), salt, iterations, HashAlgorithmName.SHA256))
             {
-                // set a 256-bit key
-                // set a 128-bit IV
-                return (pbkdf2.GetBytes(32), pbkdf2.GetBytes(16));
+                return (pbkdf2.GetBytes(keyByteSize), pbkdf2.GetBytes(IvByteSize));
             }
 
         }
@@ -26,7 +24,7 @@ namespace EasyMicroservices.Security.Providers.EncriptionProviders
             ReadOnlySpan<byte> decryptedData;
             using (Aes aes = Aes.Create())
             {
-                var keyAndIv = GenerateKeyAndIv(key);
+                var keyAndIv = GenerateKeyAndIv(key,32,16);
                 aes.Key = keyAndIv.Key;
                 aes.IV = keyAndIv.Iv;
 
@@ -50,7 +48,7 @@ namespace EasyMicroservices.Security.Providers.EncriptionProviders
 
             using (Aes aes = Aes.Create())
             {
-                var keyAndIv = GenerateKeyAndIv(key);
+                var keyAndIv = GenerateKeyAndIv(key, 32, 16);
                 aes.Key = keyAndIv.Key;
                 aes.IV = keyAndIv.Iv;
 

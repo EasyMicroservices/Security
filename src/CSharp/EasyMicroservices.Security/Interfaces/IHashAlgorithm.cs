@@ -1,4 +1,7 @@
-﻿namespace EasyMicroservices.Security.Interfaces
+﻿using System.Security.Cryptography;
+using System.Text;
+
+namespace EasyMicroservices.Security.Interfaces
 {
     /// <summary>
     /// This is a one-way process to generate a hash value to securely store passwords,
@@ -7,5 +10,6 @@
     public interface IHashAlgorithm
     {
         Span<byte> ComputeHash(Span<byte> buffer);
+      
     }
 }
