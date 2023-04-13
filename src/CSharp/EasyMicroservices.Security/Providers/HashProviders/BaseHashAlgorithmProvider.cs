@@ -1,5 +1,4 @@
 ﻿using EasyMicroservices.Security.Interfaces;
-using System.Security.Cryptography;
 
 namespace EasyMicroservices.Security.Providers.HashProviders
 {
@@ -7,14 +6,7 @@ namespace EasyMicroservices.Security.Providers.HashProviders
     {
         public virtual Span<byte> ComputeHash(Span<byte> buffer)
         {
-            using (SHA256 sha256 = SHA256.Create())
-            {
-                byte[] hash = sha256.ComputeHash(buffer.ToArray());
-                return new Span<byte>(hash);
-            }
+            throw new NotImplementedException();
         }
-
-        public virtual int HashByteSize() => 32;
-     
     }
 }
