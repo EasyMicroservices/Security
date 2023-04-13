@@ -1,3 +1,5 @@
 # Security
 Security
-support different algorithm for Encrypt and Decrypt
+- support different algorithm for Encrypt and Decrypt.
+- Hashing algorithm.
+- sign approach.
