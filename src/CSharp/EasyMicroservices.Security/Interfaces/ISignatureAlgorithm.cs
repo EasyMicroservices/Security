@@ -8,6 +8,6 @@
     public interface ISignatureAlgorithm
     {
          ReadOnlySpan<byte> SignData(ReadOnlySpan<byte> data);
-         bool ValidateSignature(string data, string signature);
+         bool ValidateSignature(ReadOnlySpan<byte> orginData, ReadOnlySpan<byte> signatureData);
     }
 }

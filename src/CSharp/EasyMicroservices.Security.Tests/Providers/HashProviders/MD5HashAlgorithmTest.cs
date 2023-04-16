@@ -1,4 +1,5 @@
 ﻿using EasyMicroservices.Security.Providers.HashProviders;
+using System.Collections.Generic;
 using Xunit;
 
 namespace EasyMicroservices.Security.Tests.Providers.HashProviders
