@@ -3,16 +3,25 @@ using System.Security.Cryptography;
 
 namespace EasyMicroservices.Security.Providers.HashProviders
 {
-    public class SHA512HashAlgorithm : BaseHashAlgorithmProvider, IHashAlgorithm
+    /// <summary>
+    /// 
+    /// </summary>
+    public class SHA512HashAlgorithm : BaseHashAlgorithmProvider, IHashProvider
     {
-        public override Span<byte> ComputeHash(Span<byte> buffer)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="System.NotImplementedException"></exception>
+        public override HashAlgorithm GetHashAlgorithm()
         {
-            using (SHA512 sha512 = SHA512.Create())
-            {
-                byte[] hash = sha512.ComputeHash(buffer.ToArray());
-                return new Span<byte>(hash);
-            }
+            return SHA512.Create();
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public override int HashByteSize() => 64;
         
     }

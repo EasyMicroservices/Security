@@ -3,18 +3,33 @@ using System.Security.Cryptography;
 
 namespace EasyMicroservices.Security.Providers.HashProviders
 {
-    public abstract class BaseHashAlgorithmProvider : IHashAlgorithm
+    /// <summary>
+    /// 
+    /// </summary>
+    public abstract class BaseHashAlgorithmProvider : IHashProvider
     {
-        public virtual Span<byte> ComputeHash(Span<byte> buffer)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="buffer"></param>
+        /// <returns></returns>
+        public virtual byte[] ComputeHash(byte[] buffer)
         {
-            using (SHA256 sha256 = SHA256.Create())
+            using (var hashAlgorithm = GetHashAlgorithm())
             {
-                byte[] hash = sha256.ComputeHash(buffer.ToArray());
-                return new Span<byte>(hash);
+                byte[] hash = hashAlgorithm.ComputeHash(buffer);
+                return hash;
             }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public virtual int HashByteSize() => 32;
-     
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public abstract HashAlgorithm GetHashAlgorithm();
     }
 }

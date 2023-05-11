@@ -1,16 +1,28 @@
 ﻿using EasyMicroservices.Security.Interfaces;
+using System;
 using System.Security.Cryptography; 
 namespace EasyMicroservices.Security.Providers.EncriptionProviders
 {
-    public class TripleDESCryptoEncryptionAlgorithm : BaseEncryptionAlgorithmProvider, IEncryptionAlgorithm
+    /// <summary>
+    /// 
+    /// </summary>
+    public class TripleDESCryptoEncryptionAlgorithm : BaseEncryptionAlgorithmProvider, IEncryptionProvider
     {
-        private readonly TripleDESCryptoServiceProvider _provider;
-
+        private readonly TripleDES _provider;
+        /// <summary>
+        /// 
+        /// </summary>
         public TripleDESCryptoEncryptionAlgorithm()
         {
-            _provider = new TripleDESCryptoServiceProvider();
+            _provider = TripleDES.Create();
         }
-        public override ReadOnlySpan<byte> Encrypt(ReadOnlySpan<byte> data, ReadOnlySpan<byte> key)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public override byte[] Encrypt(byte[] data, byte[] key)
         {
             var keyAndIv = GenerateKeyAndIv(key, 24, 8);
             _provider.Key = keyAndIv.Key;
@@ -18,22 +30,28 @@ namespace EasyMicroservices.Security.Providers.EncriptionProviders
 
             using (var encryptor = _provider.CreateEncryptor())
             {
-                byte[] encryptedData = encryptor.TransformFinalBlock(data.ToArray(), 0, data.Length);
+                byte[] encryptedData = encryptor.TransformFinalBlock(data, 0, data.Length);
                 byte[] result = new byte[keyAndIv.Iv.Length + encryptedData.Length];
                 Buffer.BlockCopy(keyAndIv.Iv, 0, result, 0, keyAndIv.Iv.Length);
                 Buffer.BlockCopy(encryptedData, 0, result, keyAndIv.Iv.Length, encryptedData.Length);
                 return result;
             }
         }
-        public override ReadOnlySpan<byte> Decrypt(ReadOnlySpan<byte> encryptedData, ReadOnlySpan<byte> key)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="encryptedData"></param>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public override byte[] Decrypt(byte[] encryptedData, byte[] key)
         {
             var keyAndIv = GenerateKeyAndIv(key, 24, 8);
             _provider.Key = keyAndIv.Key;
             _provider.IV = keyAndIv.Iv;
 
-            Buffer.BlockCopy(encryptedData.ToArray(), 0, keyAndIv.Iv, 0, keyAndIv.Iv.Length);
+            Buffer.BlockCopy(encryptedData, 0, keyAndIv.Iv, 0, keyAndIv.Iv.Length);
             byte[] data = new byte[encryptedData.Length - keyAndIv.Iv.Length];
-            Buffer.BlockCopy(encryptedData.ToArray(), keyAndIv.Iv.Length, data, 0, data.Length);
+            Buffer.BlockCopy(encryptedData, keyAndIv.Iv.Length, data, 0, data.Length);
            
             using (var decryptor = _provider.CreateDecryptor())
             {

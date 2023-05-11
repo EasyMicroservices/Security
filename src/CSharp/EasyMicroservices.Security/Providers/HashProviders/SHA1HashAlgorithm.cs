@@ -3,16 +3,24 @@ using System.Security.Cryptography;
 
 namespace EasyMicroservices.Security.Providers.HashProviders
 {
-    public class SHA1HashAlgorithm : BaseHashAlgorithmProvider, IHashAlgorithm
+    /// <summary>
+    /// 
+    /// </summary>
+    public class SHA1HashAlgorithm : BaseHashAlgorithmProvider, IHashProvider
     {
-        public override Span<byte> ComputeHash(Span<byte> buffer)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public override HashAlgorithm GetHashAlgorithm()
         {
-            using (SHA1 sha1 = SHA1.Create())
-            {
-                byte[] hash = sha1.ComputeHash(buffer.ToArray());
-                return new Span<byte>(hash);
-            }
+            return SHA1.Create();
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public override int HashByteSize() => 20;
         
     }

@@ -3,28 +3,58 @@ using System.Security.Cryptography;
 
 namespace EasyMicroservices.Security.Providers.EncriptionProviders
 {
-    public class RSAEncryptionAlgorithm: BaseEncryptionAlgorithmProvider, IEncryptionAlgorithm
+    /// <summary>
+    /// 
+    /// </summary>
+    public class RSAEncryptionAlgorithm : BaseEncryptionAlgorithmProvider, IEncryptionProvider
     {
-        private readonly RSACryptoServiceProvider _provider;
+        private readonly RSA _provider;
+        /// <summary>
+        /// 
+        /// </summary>
         public RSAEncryptionAlgorithm()
         {
-            _provider = new RSACryptoServiceProvider();
+            _provider = RSA.Create();
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="publicKey"></param>
+        /// <param name="privateKey"></param>
         public RSAEncryptionAlgorithm(string publicKey, string privateKey)
         {
-            _provider = new RSACryptoServiceProvider();
+            _provider = RSA.Create();
             _provider.FromXmlString(publicKey);
             _provider.FromXmlString(privateKey);
         }
-        public override ReadOnlySpan<byte> Encrypt(ReadOnlySpan<byte> data, ReadOnlySpan<byte> key)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public override byte[] Encrypt(byte[] data, byte[] key)
         {
-
-            return _provider.Encrypt(data.ToArray(), true);
+#if(NET45 || NET452)
+            return _provider.EncryptValue(data);
+#else
+            return _provider.Encrypt(data, RSAEncryptionPadding.Pkcs1);
+#endif
         }
-        public override ReadOnlySpan<byte> Decrypt(ReadOnlySpan<byte> encryptedData, ReadOnlySpan<byte> key)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="encryptedData"></param>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public override byte[] Decrypt(byte[] encryptedData, byte[] key)
         {
-            return _provider.Decrypt(encryptedData.ToArray(), true);
-        }   
+#if (NET45|| NET452)
+            return _provider.DecryptValue(encryptedData);
+#else
+            return _provider.Decrypt(encryptedData, RSAEncryptionPadding.Pkcs1);
+#endif
+        }
     }
 }
 

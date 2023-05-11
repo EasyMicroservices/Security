@@ -3,16 +3,24 @@ using System.Security.Cryptography;
 
 namespace EasyMicroservices.Security.Providers.HashProviders
 {
-    public class MD5HashAlgorithm : BaseHashAlgorithmProvider, IHashAlgorithm
+    /// <summary>
+    /// 
+    /// </summary>
+    public class MD5HashAlgorithm : BaseHashAlgorithmProvider, IHashProvider
     {
-        public override Span<byte> ComputeHash(Span<byte> buffer)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public override HashAlgorithm GetHashAlgorithm()
         {
-            using (MD5 md5 = MD5.Create())
-            {
-                byte[] hash = md5.ComputeHash(buffer.ToArray());
-                return new Span<byte>(hash);
-            }
+            return MD5.Create();
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public override int HashByteSize() => 16;
         
     }
