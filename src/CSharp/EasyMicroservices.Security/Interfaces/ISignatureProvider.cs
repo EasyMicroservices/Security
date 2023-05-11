@@ -16,9 +16,9 @@
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="data"></param>
-        /// <param name="signature"></param>
+        /// <param name="orginData"></param>
+        /// <param name="signatureData"></param>
         /// <returns></returns>
-        bool ValidateSignature(string data, string signature);
+        bool ValidateSignature(byte[] orginData, byte[] signatureData);
     }
 }

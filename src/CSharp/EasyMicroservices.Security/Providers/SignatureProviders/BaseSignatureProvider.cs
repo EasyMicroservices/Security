@@ -1,5 +1,6 @@
 ﻿using EasyMicroservices.Security.Interfaces;
 using System;
+using System.Security.Cryptography;
 
 namespace EasyMicroservices.Security.Providers.SignatureProviders
 {
@@ -11,23 +12,40 @@ namespace EasyMicroservices.Security.Providers.SignatureProviders
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="data"></param>
-        /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
-        public virtual byte[] SignData(byte[] data)
+        protected readonly RSACryptoServiceProvider _provider;
+        /// <summary>
+        /// 
+        /// </summary>
+        public BaseSignatureProvider()
         {
-            throw new NotImplementedException();
+            _provider = new RSACryptoServiceProvider();
         }
         /// <summary>
         /// 
         /// </summary>
         /// <param name="data"></param>
-        /// <param name="signature"></param>
         /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
-        public virtual bool ValidateSignature(string data, string signature)
+        public virtual byte[] SignData(byte[] data)
         {
+#if (NET45)
             throw new NotImplementedException();
+#else
+            return _provider.SignData(data, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
+#endif
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="orginData"></param>
+        /// <param name="signatureData"></param>
+        /// <returns></returns>
+        public virtual bool ValidateSignature(byte[] orginData, byte[] signatureData)
+        {
+#if (NET45)
+            throw new NotImplementedException();
+#else
+            return _provider.VerifyData(orginData, signatureData, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
+#endif
         }
     }
 }
