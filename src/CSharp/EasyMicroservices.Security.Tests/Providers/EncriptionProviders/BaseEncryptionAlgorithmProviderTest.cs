@@ -1,4 +1,5 @@
 ﻿using EasyMicroservices.Security.Interfaces;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using Xunit;
@@ -7,8 +8,8 @@ namespace EasyMicroservices.Security.Tests.Providers.EncriptionProviders
 {
     public abstract class BaseEncryptionAlgorithmProviderTest
     {
-        protected readonly IEncryptionAlgorithm _provider;
-        public BaseEncryptionAlgorithmProviderTest(IEncryptionAlgorithm provider)
+        protected readonly IEncryptionProvider _provider;
+        public BaseEncryptionAlgorithmProviderTest(IEncryptionProvider provider)
         {
             _provider = provider;
         }
@@ -38,7 +39,7 @@ namespace EasyMicroservices.Security.Tests.Providers.EncriptionProviders
             // Act
             var encryptedData = _provider.Encrypt(data, key1);
             //convert to array to can use in lambda expersion
-            var arrayByte = encryptedData.ToArray();
+            var arrayByte = encryptedData;
             // Assert
             Assert.ThrowsAny<CryptographicException>(()=> _provider.Decrypt(arrayByte, key2));         
            

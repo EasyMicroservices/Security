@@ -17,6 +17,7 @@ namespace EasyMicroservices.Security.Tests.Providers.EncriptionProviders
         public RSAEncryptionAlgorithmTest() : base(new RSAEncryptionAlgorithm(publicKey, privateKey))
         {
         }
+#if(!NET452)
         [Theory]
         [InlineData("Hello Easy-MicroService!", "MySecurityKey")]
         [InlineData("سلام ایزی میکروسرویس", "کلید امنیتی")]
@@ -24,6 +25,6 @@ namespace EasyMicroservices.Security.Tests.Providers.EncriptionProviders
         {
             base.Test_Symmetric_ValidData(originalDataString, keyString);
         }
-
-  }
+#endif
+    }
 }
