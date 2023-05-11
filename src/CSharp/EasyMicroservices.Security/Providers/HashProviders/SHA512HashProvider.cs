@@ -6,7 +6,7 @@ namespace EasyMicroservices.Security.Providers.HashProviders
     /// <summary>
     /// 
     /// </summary>
-    public class SHA512HashAlgorithm : BaseHashAlgorithmProvider, IHashProvider
+    public class SHA512HashProvider : BaseHashProvider, IHashProvider
     {
         /// <summary>
         /// 

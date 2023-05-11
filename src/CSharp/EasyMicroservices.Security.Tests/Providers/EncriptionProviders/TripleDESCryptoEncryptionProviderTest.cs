@@ -8,9 +8,9 @@ using Xunit;
 
 namespace EasyMicroservices.Security.Tests.Providers.EncriptionProviders
 {
-    public class TripleDESCryptoEncryptionAlgorithmTest : BaseEncryptionAlgorithmProviderTest
+    public class TripleDESCryptoEncryptionProviderTest : BaseEncryptionProviderTest
     {
-        public TripleDESCryptoEncryptionAlgorithmTest() : base(new TripleDESCryptoEncryptionAlgorithm())
+        public TripleDESCryptoEncryptionProviderTest() : base(new TripleDESCryptoEncryptionProvider())
         {
         }
         [Theory]

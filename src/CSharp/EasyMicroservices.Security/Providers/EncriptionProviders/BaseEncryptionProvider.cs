@@ -9,7 +9,7 @@ namespace EasyMicroservices.Security.Providers.EncriptionProviders
     /// <summary>
     /// 
     /// </summary>
-    public abstract class BaseEncryptionAlgorithmProvider : IEncryptionProvider
+    public abstract class BaseEncryptionProvider : IEncryptionProvider
     {
         // salt size must be at least 8 bytes, we will use 16 bytes
         private static readonly byte[] salt = Encoding.Unicode.GetBytes("EasyEasy");

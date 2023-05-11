@@ -6,10 +6,10 @@ using Xunit;
 
 namespace EasyMicroservices.Security.Tests.Providers.EncriptionProviders
 {
-    public abstract class BaseEncryptionAlgorithmProviderTest
+    public abstract class BaseEncryptionProviderTest
     {
         protected readonly IEncryptionProvider _provider;
-        public BaseEncryptionAlgorithmProviderTest(IEncryptionProvider provider)
+        public BaseEncryptionProviderTest(IEncryptionProvider provider)
         {
             _provider = provider;
         }

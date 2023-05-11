@@ -4,11 +4,11 @@ using Xunit;
 
 namespace EasyMicroservices.Security.Tests.Providers.HashProviders
 {
-    public abstract class BaseHashAlgorithmProviderTest
+    public abstract class BaseHashProviderTest
     {
         private readonly byte[] _testData = new byte[] { 0x01, 0x02, 0x03, 0x04, 0x05 };
         protected readonly IHashProvider _provider;
-        public BaseHashAlgorithmProviderTest(IHashProvider provider)
+        public BaseHashProviderTest(IHashProvider provider)
         {
             _provider = provider;
         }

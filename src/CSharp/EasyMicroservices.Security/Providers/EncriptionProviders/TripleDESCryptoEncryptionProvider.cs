@@ -1,21 +1,20 @@
 ﻿using EasyMicroservices.Security.Interfaces;
 using System;
-using System.Security.Cryptography;
-
+using System.Security.Cryptography; 
 namespace EasyMicroservices.Security.Providers.EncriptionProviders
 {
     /// <summary>
     /// 
     /// </summary>
-    public class DESCryptoEncryptionAlgorithm : BaseEncryptionAlgorithmProvider, IEncryptionProvider
+    public class TripleDESCryptoEncryptionProvider : BaseEncryptionProvider, IEncryptionProvider
     {
-        private readonly DES _provider;
+        private readonly TripleDES _provider;
         /// <summary>
         /// 
         /// </summary>
-        public DESCryptoEncryptionAlgorithm()
+        public TripleDESCryptoEncryptionProvider()
         {
-            _provider = DES.Create();
+            _provider = TripleDES.Create();
         }
         /// <summary>
         /// 
@@ -25,7 +24,7 @@ namespace EasyMicroservices.Security.Providers.EncriptionProviders
         /// <returns></returns>
         public override byte[] Encrypt(byte[] data, byte[] key)
         {
-            var keyAndIv = GenerateKeyAndIv(key, 8, 8);
+            var keyAndIv = GenerateKeyAndIv(key, 24, 8);
             _provider.Key = keyAndIv.Key;
             _provider.IV = keyAndIv.Iv;
 
@@ -38,7 +37,6 @@ namespace EasyMicroservices.Security.Providers.EncriptionProviders
                 return result;
             }
         }
-
         /// <summary>
         /// 
         /// </summary>
@@ -47,18 +45,18 @@ namespace EasyMicroservices.Security.Providers.EncriptionProviders
         /// <returns></returns>
         public override byte[] Decrypt(byte[] encryptedData, byte[] key)
         {
-            var keyAndIv = GenerateKeyAndIv(key, 8, 8);
+            var keyAndIv = GenerateKeyAndIv(key, 24, 8);
             _provider.Key = keyAndIv.Key;
             _provider.IV = keyAndIv.Iv;
+
             Buffer.BlockCopy(encryptedData, 0, keyAndIv.Iv, 0, keyAndIv.Iv.Length);
             byte[] data = new byte[encryptedData.Length - keyAndIv.Iv.Length];
             Buffer.BlockCopy(encryptedData, keyAndIv.Iv.Length, data, 0, data.Length);
-
+           
             using (var decryptor = _provider.CreateDecryptor())
             {
                 return decryptor.TransformFinalBlock(data, 0, data.Length);
             }
-        }
-
+        }        
     }
 }

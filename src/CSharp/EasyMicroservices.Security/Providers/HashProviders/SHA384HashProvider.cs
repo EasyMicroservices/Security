@@ -6,7 +6,7 @@ namespace EasyMicroservices.Security.Providers.HashProviders
     /// <summary>
     /// 
     /// </summary>
-    public class SHA1HashAlgorithm : BaseHashAlgorithmProvider, IHashProvider
+    public class SHA384HashProvider : BaseHashProvider, IHashProvider
     {
         /// <summary>
         /// 
@@ -14,14 +14,14 @@ namespace EasyMicroservices.Security.Providers.HashProviders
         /// <returns></returns>
         public override HashAlgorithm GetHashAlgorithm()
         {
-            return SHA1.Create();
+            return SHA384.Create();
         }
 
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
-        public override int HashByteSize() => 20;
-        
+        public override int HashByteSize() => 48;
+       
     }
 }

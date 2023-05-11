@@ -6,13 +6,13 @@ namespace EasyMicroservices.Security.Providers.EncriptionProviders
     /// <summary>
     /// 
     /// </summary>
-    public class RSAEncryptionAlgorithm : BaseEncryptionAlgorithmProvider, IEncryptionProvider
+    public class RSAEncryptionProvider : BaseEncryptionProvider, IEncryptionProvider
     {
         private readonly RSA _provider;
         /// <summary>
         /// 
         /// </summary>
-        public RSAEncryptionAlgorithm()
+        public RSAEncryptionProvider()
         {
             _provider = RSA.Create();
         }
@@ -21,7 +21,7 @@ namespace EasyMicroservices.Security.Providers.EncriptionProviders
         /// </summary>
         /// <param name="publicKey"></param>
         /// <param name="privateKey"></param>
-        public RSAEncryptionAlgorithm(string publicKey, string privateKey)
+        public RSAEncryptionProvider(string publicKey, string privateKey)
         {
             _provider = RSA.Create();
             _provider.FromXmlString(publicKey);

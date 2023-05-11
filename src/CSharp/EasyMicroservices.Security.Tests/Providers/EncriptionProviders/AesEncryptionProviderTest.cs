@@ -3,13 +3,14 @@ using Xunit;
 
 namespace EasyMicroservices.Security.Tests.Providers.EncriptionProviders
 {
-    public class DESCryptoEncryptionAlgorithmTest : BaseEncryptionAlgorithmProviderTest
+    public class AesEncryptionProviderTest : BaseEncryptionProviderTest
     {
-        public DESCryptoEncryptionAlgorithmTest() : base(new DESCryptoEncryptionAlgorithm())
+        public AesEncryptionProviderTest() : base(new AesEncryptionProvider())
         {
         }
         [Theory]
-        [InlineData("Hello Easy-MicroService!", "MySecurityKey")]    
+        [InlineData("Hello Easy-MicroService!","MySecurityKey")]
+        [InlineData("سلام ایزی میکروسرویس","کلید امنیتی")]
         public override void Test_Symmetric_ValidData(string originalDataString, string keyString)
         {
             base.Test_Symmetric_ValidData(originalDataString, keyString);

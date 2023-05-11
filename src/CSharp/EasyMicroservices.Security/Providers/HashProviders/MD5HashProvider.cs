@@ -6,7 +6,7 @@ namespace EasyMicroservices.Security.Providers.HashProviders
     /// <summary>
     /// 
     /// </summary>
-    public class MD5HashAlgorithm : BaseHashAlgorithmProvider, IHashProvider
+    public class MD5HashProvider : BaseHashProvider, IHashProvider
     {
         /// <summary>
         /// 

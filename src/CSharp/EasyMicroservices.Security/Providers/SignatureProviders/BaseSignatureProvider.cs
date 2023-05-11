@@ -6,7 +6,7 @@ namespace EasyMicroservices.Security.Providers.SignatureProviders
     /// <summary>
     /// 
     /// </summary>
-    public abstract class BaseSignatureAlgorithmProvider : ISignatureProvider
+    public abstract class BaseSignatureProvider : ISignatureProvider
     {
         /// <summary>
         /// 

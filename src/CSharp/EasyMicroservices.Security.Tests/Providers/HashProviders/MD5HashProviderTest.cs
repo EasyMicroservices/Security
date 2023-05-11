@@ -3,14 +3,14 @@ using Xunit;
 
 namespace EasyMicroservices.Security.Tests.Providers.HashProviders
 {
-    public class SHA512HashAlgorithmTest : BaseHashAlgorithmProviderTest
+    public class MD5HashProviderTest : BaseHashProviderTest
     {
-        public SHA512HashAlgorithmTest() : base(new SHA512HashAlgorithm())
+        public MD5HashProviderTest() : base(new MD5HashProvider())
         {
         }
 
         [Theory]
-        [InlineData("50540bc4ae31875fceb3829434c55e3c2b66ddd7227a883a3b4cc8f6cda965ad1712b3ee0008f9cee08da93f5234c1a7bf0e2570ef56d65280ffea691b953efe")]
+        [InlineData("7cfdd07889b3295d6a550914ab35e068")]
         public override void ComputeHash_ReturnsExpectedHash(string expectedhashString)
         {
             base.ComputeHash_ReturnsExpectedHash(expectedhashString);

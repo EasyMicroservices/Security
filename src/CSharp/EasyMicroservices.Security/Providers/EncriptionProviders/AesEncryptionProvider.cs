@@ -5,7 +5,7 @@ namespace EasyMicroservices.Security.Providers.EncriptionProviders
     /// <summary>
     /// 
     /// </summary>
-    public class AesEncryptionAlgorithm : BaseEncryptionAlgorithmProvider, IEncryptionProvider
+    public class AesEncryptionProvider : BaseEncryptionProvider, IEncryptionProvider
     {
     }
 }

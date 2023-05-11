@@ -3,9 +3,9 @@ using Xunit;
 
 namespace EasyMicroservices.Security.Tests.Providers.HashProviders
 {
-    public class SHA384HashAlgorithmTest : BaseHashAlgorithmProviderTest
+    public class SHA384HashProviderTest : BaseHashProviderTest
     {
-        public SHA384HashAlgorithmTest() : base(new SHA384HashAlgorithm())
+        public SHA384HashProviderTest() : base(new SHA384HashProvider())
         {
         }
 

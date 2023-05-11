@@ -6,7 +6,7 @@ namespace EasyMicroservices.Security.Providers.HashProviders
     /// <summary>
     /// 
     /// </summary>
-    public abstract class BaseHashAlgorithmProvider : IHashProvider
+    public abstract class BaseHashProvider : IHashProvider
     {
         /// <summary>
         /// 
