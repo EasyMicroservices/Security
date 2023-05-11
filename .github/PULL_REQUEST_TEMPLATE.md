@@ -8,7 +8,7 @@
 
 ### Checklist:
 
-- [ ] It refers to an [Issue](https://github.com/EasyMicroservices/FileManager/issues).
+- [ ] It refers to an [Issue](https://github.com/EasyMicroservices/Security/issues).
 - [ ] It fixes a bug.
 - [ ] It's a new feature (non-breaking change which adds functionality)
 - [ ] It's a breaking (fix or feature that would cause existing functionality to change)
