@@ -28,8 +28,8 @@ namespace EasyMicroservices.Security.Tests.Providers.SignatureProviders
         public virtual void SignatureAlgorithmSignAndValidateDataFalse(string dataString)
         {
             //arrange
-            var data = Encoding.UTF8.GetBytes(dataString);            
-            var fakeData= Encoding.UTF8.GetBytes(dataString+"-");
+            var data = Encoding.UTF8.GetBytes(dataString);
+            var fakeData = Encoding.UTF8.GetBytes(dataString + "-");
             // act
             var signature = _provider.SignData(data);
             var isValid = _provider.ValidateSignature(fakeData, signature);
@@ -37,6 +37,6 @@ namespace EasyMicroservices.Security.Tests.Providers.SignatureProviders
             // assert
             Assert.False(isValid);
         }
-      
+
     }
 }

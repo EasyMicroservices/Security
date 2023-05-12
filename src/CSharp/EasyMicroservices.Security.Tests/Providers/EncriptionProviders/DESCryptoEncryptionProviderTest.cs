@@ -9,7 +9,7 @@ namespace EasyMicroservices.Security.Tests.Providers.EncriptionProviders
         {
         }
         [Theory]
-        [InlineData("Hello Easy-MicroService!", "MySecurityKey")]    
+        [InlineData("Hello Easy-MicroService!", "MySecurityKey")]
         public override void Test_Symmetric_ValidData(string originalDataString, string keyString)
         {
             base.Test_Symmetric_ValidData(originalDataString, keyString);

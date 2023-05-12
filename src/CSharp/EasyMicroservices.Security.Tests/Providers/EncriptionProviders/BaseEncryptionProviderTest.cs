@@ -31,7 +31,7 @@ namespace EasyMicroservices.Security.Tests.Providers.EncriptionProviders
         public virtual void Test_Symmetric_WithDifferentKey(string originalDataString, string stringKey1, string stringKey2)
         {
             // Arrange           
-           
+
             var key1 = Encoding.UTF8.GetBytes(stringKey1);
             var key2 = Encoding.UTF8.GetBytes(stringKey2);
             var data = Encoding.UTF8.GetBytes(originalDataString);
@@ -41,8 +41,8 @@ namespace EasyMicroservices.Security.Tests.Providers.EncriptionProviders
             //convert to array to can use in lambda expersion
             var arrayByte = encryptedData;
             // Assert
-            Assert.ThrowsAny<CryptographicException>(()=> _provider.Decrypt(arrayByte, key2));         
-           
+            Assert.ThrowsAny<CryptographicException>(() => _provider.Decrypt(arrayByte, key2));
+
         }
     }
 }

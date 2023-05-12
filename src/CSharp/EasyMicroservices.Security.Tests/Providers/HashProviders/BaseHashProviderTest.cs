@@ -13,7 +13,7 @@ namespace EasyMicroservices.Security.Tests.Providers.HashProviders
             _provider = provider;
         }
         public virtual void ComputeHash_ReturnsExpectedHash(string expectedhashString)
-        {            
+        {
             byte[] hash = _provider.ComputeHash(_testData);
             Assert.Equal(expectedhashString, BitConverter.ToString(hash).Replace("-", "").ToLower());
             Assert.Equal(_provider.HashByteSize(), hash.Length);

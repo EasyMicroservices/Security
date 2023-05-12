@@ -1,6 +1,6 @@
 ﻿using EasyMicroservices.Security.Interfaces;
 using System;
-using System.Security.Cryptography; 
+using System.Security.Cryptography;
 namespace EasyMicroservices.Security.Providers.EncriptionProviders
 {
     /// <summary>
@@ -52,11 +52,11 @@ namespace EasyMicroservices.Security.Providers.EncriptionProviders
             Buffer.BlockCopy(encryptedData, 0, keyAndIv.Iv, 0, keyAndIv.Iv.Length);
             byte[] data = new byte[encryptedData.Length - keyAndIv.Iv.Length];
             Buffer.BlockCopy(encryptedData, keyAndIv.Iv.Length, data, 0, data.Length);
-           
+
             using (var decryptor = _provider.CreateDecryptor())
             {
                 return decryptor.TransformFinalBlock(data, 0, data.Length);
             }
-        }        
+        }
     }
 }

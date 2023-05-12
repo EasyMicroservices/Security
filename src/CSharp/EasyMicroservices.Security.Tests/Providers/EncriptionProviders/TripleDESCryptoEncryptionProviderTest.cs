@@ -26,6 +26,6 @@ namespace EasyMicroservices.Security.Tests.Providers.EncriptionProviders
         {
             base.Test_Symmetric_WithDifferentKey(originalDataString, stringKey1, stringKey2);
         }
-    
+
     }
 }

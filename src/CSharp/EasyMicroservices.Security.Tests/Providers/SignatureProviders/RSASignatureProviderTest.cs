@@ -9,7 +9,7 @@ namespace EasyMicroservices.Security.Tests.Providers.SignatureProviders
 
         static string publicKey = "<RSAKeyValue><Exponent>AQAB</Exponent><Modulus>rvH+oW61xbXYQvg+GInL5B3KPamNuxYWke/UaOxQAsAeuvtJ+5AxfqKIkh1UY9SwAhb1r13wBG8PhM6ARqKNt9XueZucZTCvtGc6XNhAZlOwsNl1fKneHQKobriKJfkF3eMPKY2Dz3Ws1SEUQ5SyAF6hJrarB1WG08eMuqILGKB5Ec/VbO/sN5qZ0uREicbDEvJAr7b+9Nn/LGQ4hH8Ej4RLN/xydwK9jdeAQz9qjE5lx5yJE5oP0Czvkr10u+Yc4v/s17gJFleCw7A3uEep6X02ENYdu33mv2z8MkijyxltCfVtAUyTXhK3Q/H+v6eWkpaPxdQuXX+2vUcYG4qhNw==</Modulus></RSAKeyValue>";
 
-        public RSASignatureProviderTest() : base(new RSASignatureProvider(publicKey,privateKey))
+        public RSASignatureProviderTest() : base(new RSASignatureProvider(publicKey, privateKey))
         {
         }
 #if (!NET452)
