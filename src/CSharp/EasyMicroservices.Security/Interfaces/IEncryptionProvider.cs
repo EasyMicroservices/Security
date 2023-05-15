@@ -43,6 +43,12 @@ namespace EasyMicroservices.Security.Interfaces
         /// <param name="data">input data that wants to Encrypt</param>
         /// <returns>crypto-byte</returns>
         Task EncryptToStream(Stream streamWriter, byte[] data);
+        /// <summary>
+        /// decrypt data from stream
+        /// </summary>
+        /// <param name="streamWriter">stream to decrypt</param>
+        /// <returns>decrypted data</returns>
+        Task<byte[]> DecryptFromStream(Stream streamWriter);
     }
 
 }

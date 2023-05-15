@@ -21,6 +21,7 @@ namespace EasyMicroservices.Security.Providers.SignatureProviders
         public BaseSignatureProvider(IStreamMiddleware streamMiddleware = default)
         {
             InnerStreamMiddleware = streamMiddleware;
+            _provider = new RSACryptoServiceProvider();
         }
         /// <summary>
         /// 
@@ -30,14 +31,6 @@ namespace EasyMicroservices.Security.Providers.SignatureProviders
         /// 
         /// </summary>
         public IStreamMiddleware InnerStreamMiddleware { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public BaseSignatureProvider()
-        {
-            _provider = new RSACryptoServiceProvider();
-        }
 
         /// <summary>
         /// 
@@ -76,7 +69,7 @@ namespace EasyMicroservices.Security.Providers.SignatureProviders
         /// <returns></returns>
         public Task SignDataToStream(Stream streamWriter, byte[] data)
         {
-            WriteToStream(streamWriter, data, data.Length);
+            WriteToStream(streamWriter, data);
             return TaskHelper.GetCompletedTask();
         }
 
@@ -105,12 +98,21 @@ namespace EasyMicroservices.Security.Providers.SignatureProviders
         /// </summary>
         /// <param name="streamWriter"></param>
         /// <param name="data"></param>
-        /// <param name="count"></param>
         /// <returns></returns>
-        public override void WriteToStream(Stream streamWriter, byte[] data, int count)
+        public override void WriteToStream(Stream streamWriter, byte[] data)
         {
             var encrypt = SignData(data);
-            streamWriter.Write(encrypt, 0, count);
+            streamWriter.Write(encrypt, 0, encrypt.Length);
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="streamReader"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public override Task<byte[]> ReadFromStream(Stream streamReader)
+        {
+            throw new NotImplementedException();
         }
     }
 }

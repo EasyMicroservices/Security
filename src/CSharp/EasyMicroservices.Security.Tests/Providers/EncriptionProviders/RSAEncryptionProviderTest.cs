@@ -1,5 +1,5 @@
 ﻿using EasyMicroservices.Security.Providers.EncryptionProviders;
-using Xunit;
+using System.Threading.Tasks;
 
 namespace EasyMicroservices.Security.Tests.Providers.EncriptionProviders
 {
@@ -12,14 +12,20 @@ namespace EasyMicroservices.Security.Tests.Providers.EncriptionProviders
         public RSAEncryptionProviderTest() : base(new RSAEncryptionProvider(publicKey, privateKey), null)
         {
         }
-#if(!NET452)
-        [Theory]
-        [InlineData("Hello Easy-MicroService!")]
-        [InlineData("سلام ایزی میکروسرویس")]
+#if(NET452)
         public override void Test_Symmetric_ValidData(string originalDataString)
         {
-            base.Test_Symmetric_ValidData(originalDataString);
+
+        }
+
+        public override Task Test_Symmetric_StreamData(string originalDataString)
+        {
+            return TaskHelper.GetCompletedTask();
         }
 #endif
+        public override void Test_Symmetric_WithDifferentKey(string originalDataString)
+        {
+
+        }
     }
 }

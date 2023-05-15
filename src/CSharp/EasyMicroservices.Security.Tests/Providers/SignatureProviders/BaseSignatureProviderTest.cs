@@ -1,10 +1,12 @@
 ﻿using EasyMicroservices.Security.Interfaces;
+using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace EasyMicroservices.Security.Tests.Providers.SignatureProviders
 {
-    public class BaseSignatureProviderTest
+    public abstract class BaseSignatureProviderTest
     {
         private readonly ISignatureProvider _provider;
 
@@ -13,6 +15,9 @@ namespace EasyMicroservices.Security.Tests.Providers.SignatureProviders
             this._provider = provider;
         }
 
+        [Theory]
+        [InlineData("Hello! easy micro-service")]
+        [InlineData("سلام مهدی و علی")]
         public virtual void SignatureAlgorithmSignAndValidateDataSuccess(string dataString)
         {
             //arrange
@@ -25,6 +30,27 @@ namespace EasyMicroservices.Security.Tests.Providers.SignatureProviders
             // assert
             Assert.True(isValid);
         }
+
+        [Theory]
+        [InlineData("Hello! easy micro-service")]
+        [InlineData("سلام مهدی و علی")]
+        public virtual async Task SignatureAlgorithmSignAndValidateDataSuccessStream(string dataString)
+        {
+            //arrange
+            var data = Encoding.UTF8.GetBytes(dataString);
+            using var stream = new MemoryStream();
+            await _provider.SignDataToStream(stream, data);
+            // act
+            var signature = stream.ToArray();
+            var isValid = _provider.ValidateSignature(data, signature);
+
+            // assert
+            Assert.True(isValid);
+        }
+
+        [Theory]
+        [InlineData("Hello! easy micro-service")]
+        [InlineData("سلام علی و مهدی")]
         public virtual void SignatureAlgorithmSignAndValidateDataFalse(string dataString)
         {
             //arrange

@@ -1,4 +1,5 @@
 ﻿using EasyMicroservices.Security.Providers.SignatureProviders;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace EasyMicroservices.Security.Tests.Providers.SignatureProviders
@@ -12,18 +13,18 @@ namespace EasyMicroservices.Security.Tests.Providers.SignatureProviders
         public RSASignatureProviderTest() : base(new RSASignatureProvider(publicKey, privateKey))
         {
         }
-#if (!NET452)
-        [Theory]
-        [InlineData("Hello! easy micro-service")]
+#if (NET452)
         public override void SignatureAlgorithmSignAndValidateDataFalse(string dataString)
         {
-            base.SignatureAlgorithmSignAndValidateDataFalse(dataString);
         }
-        [Theory]
-        [InlineData("Hello! easy micro-service")]
+
         public override void SignatureAlgorithmSignAndValidateDataSuccess(string dataString)
         {
-            base.SignatureAlgorithmSignAndValidateDataSuccess(dataString);
+        }
+
+        public override Task SignatureAlgorithmSignAndValidateDataSuccessStream(string dataString)
+        {
+            return TaskHelper.GetCompletedTask();
         }
 #endif
     }

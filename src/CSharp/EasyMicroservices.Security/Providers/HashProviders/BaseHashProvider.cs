@@ -58,7 +58,7 @@ namespace EasyMicroservices.Security.Providers.HashProviders
         /// <returns></returns>
         public Task ComputeHashToStream(Stream streamWriter, byte[] buffer)
         {
-            WriteToStream(streamWriter, buffer, buffer.Length);
+            WriteToStream(streamWriter, buffer);
             return TaskHelper.GetCompletedTask();
         }
 
@@ -87,12 +87,21 @@ namespace EasyMicroservices.Security.Providers.HashProviders
         /// </summary>
         /// <param name="streamWriter"></param>
         /// <param name="data"></param>
-        /// <param name="count"></param>
         /// <returns></returns>
-        public override void WriteToStream(Stream streamWriter, byte[] data, int count)
+        public override void WriteToStream(Stream streamWriter, byte[] data)
         {
             var encrypt = ComputeHash(data);
-            streamWriter.Write(encrypt, 0, count);
+            streamWriter.Write(encrypt, 0, encrypt.Length);
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="streamReader"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public override Task<byte[]> ReadFromStream(Stream streamReader)
+        {
+            throw new NotImplementedException();
         }
     }
 }

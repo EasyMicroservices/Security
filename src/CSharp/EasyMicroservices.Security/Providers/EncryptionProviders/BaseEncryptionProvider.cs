@@ -80,8 +80,17 @@ namespace EasyMicroservices.Security.Providers.EncryptionProviders
         /// <returns></returns>
         public Task EncryptToStream(Stream streamWriter, byte[] data)
         {
-            WriteToStream(streamWriter, data, data.Length);
+            WriteToStream(streamWriter, data);
             return TaskHelper.GetCompletedTask();
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="streamWriter"></param>
+        /// <returns></returns>
+        public Task<byte[]> DecryptFromStream(Stream streamWriter)
+        {
+            return ReadFromStream(streamWriter);
         }
 
         /// <summary>
@@ -109,12 +118,22 @@ namespace EasyMicroservices.Security.Providers.EncryptionProviders
         /// </summary>
         /// <param name="streamWriter"></param>
         /// <param name="data"></param>
-        /// <param name="count"></param>
         /// <returns></returns>
-        public override void WriteToStream(Stream streamWriter, byte[] data, int count)
+        public override void WriteToStream(Stream streamWriter, byte[] data)
         {
             var encrypt = Encrypt(data);
-            streamWriter.Write(encrypt, 0, count);
+            streamWriter.Write(encrypt, 0, encrypt.Length);
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="streamWriter"></param>
+        /// <returns></returns>
+        public override async Task<byte[]> ReadFromStream(Stream streamWriter)
+        {
+            var allBytes = await streamWriter.StreamToBytesAsync(BufferSize);
+            var decrypt = Decrypt(allBytes);
+            return decrypt;
         }
     }
 }

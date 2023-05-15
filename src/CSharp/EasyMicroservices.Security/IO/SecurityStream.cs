@@ -1,5 +1,8 @@
 ﻿using EasyMicroservices.Security.Providers;
+using System;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace EasyMicroservices.Security.IO
 {
@@ -37,7 +40,16 @@ namespace EasyMicroservices.Security.IO
 
         public override int Read(byte[] buffer, int offset, int count)
         {
-            return _internalStream.Read(buffer, offset, count);
+            throw new System.NotImplementedException("Please use ReadAsync");
+        }
+
+        public override async Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
+        {
+            var result = await _baseSecurityProvider.ReadFromStream(_internalStream);
+            if (buffer.Length != result.Length)
+                Array.Resize(ref buffer, result.Length);
+            Array.Copy(result, buffer, result.Length);
+            return result.Length;
         }
 
         public override long Seek(long offset, SeekOrigin origin)
@@ -52,7 +64,9 @@ namespace EasyMicroservices.Security.IO
 
         public override void Write(byte[] buffer, int offset, int count)
         {
-            _baseSecurityProvider.WriteToStream(_internalStream, buffer, count);
+            if (buffer.Length > count)
+                Array.Resize(ref buffer, count);
+            _baseSecurityProvider.WriteToStream(_internalStream, buffer);
         }
     }
 }
