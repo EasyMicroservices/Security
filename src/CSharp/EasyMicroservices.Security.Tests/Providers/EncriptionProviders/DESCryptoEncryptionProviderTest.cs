@@ -1,24 +1,24 @@
-﻿using EasyMicroservices.Security.Providers.EncriptionProviders;
+﻿using EasyMicroservices.Security.Providers.EncryptionProviders;
 using Xunit;
 
 namespace EasyMicroservices.Security.Tests.Providers.EncriptionProviders
 {
     public class DESCryptoEncryptionProviderTest : BaseEncryptionProviderTest
     {
-        public DESCryptoEncryptionProviderTest() : base(new DESCryptoEncryptionProvider())
+        public DESCryptoEncryptionProviderTest() : base(new DESCryptoEncryptionProvider(Key), new DESCryptoEncryptionProvider(Key2))
         {
         }
         [Theory]
-        [InlineData("Hello Easy-MicroService!", "MySecurityKey")]
-        public override void Test_Symmetric_ValidData(string originalDataString, string keyString)
+        [InlineData("Hello Easy-MicroService!")]
+        public override void Test_Symmetric_ValidData(string originalDataString)
         {
-            base.Test_Symmetric_ValidData(originalDataString, keyString);
+            base.Test_Symmetric_ValidData(originalDataString);
         }
         [Theory]
-        [InlineData("Hello Easy-MicroService!", "MySecurityKey1", "Invalidkey")]
-        public override void Test_Symmetric_WithDifferentKey(string originalDataString, string stringKey1, string stringKey2)
+        [InlineData("Hello Easy-MicroService!")]
+        public override void Test_Symmetric_WithDifferentKey(string originalDataString)
         {
-            base.Test_Symmetric_WithDifferentKey(originalDataString, stringKey1, stringKey2);
+            base.Test_Symmetric_WithDifferentKey(originalDataString);
         }
     }
 }

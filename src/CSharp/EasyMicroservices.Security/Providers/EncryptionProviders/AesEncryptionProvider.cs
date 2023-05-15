@@ -4,44 +4,37 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace EasyMicroservices.Security.Providers.EncriptionProviders
+namespace EasyMicroservices.Security.Providers.EncryptionProviders
 {
     /// <summary>
     /// 
     /// </summary>
-    public abstract class BaseEncryptionProvider : IEncryptionProvider
+    public class AesEncryptionProvider : BaseEncryptionProvider, IEncryptionProvider
     {
-        // salt size must be at least 8 bytes, we will use 16 bytes
-        private static readonly byte[] salt = Encoding.Unicode.GetBytes("EasyEasy");
-        // iterations must be at least 1000, we will use 2000
-        private static readonly int iterations = 2000;
         /// <summary>
         /// 
         /// </summary>
         /// <param name="key"></param>
-        /// <param name="keyByteSize"></param>
-        /// <param name="IvByteSize"></param>
-        /// <returns></returns>
-        public RSAKeyValue GenerateKeyAndIv(byte[] key, int keyByteSize, int IvByteSize)
+        public AesEncryptionProvider(byte[] key)
         {
-            using (var pbkdf2 = new Rfc2898DeriveBytes(key, salt, iterations))
-            {
-                return new RSAKeyValue(pbkdf2.GetBytes(keyByteSize), pbkdf2.GetBytes(IvByteSize));
-            }
-
+            Key = key;
         }
         /// <summary>
         /// 
         /// </summary>
+        public byte[] Key { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="encryptedData"></param>
-        /// <param name="key"></param>
         /// <returns></returns>
-        public virtual byte[] Decrypt(byte[] encryptedData, byte[] key)
+        public override byte[] Decrypt(byte[] encryptedData)
         {
             byte[] decryptedData;
             using (Aes aes = Aes.Create())
             {
-                var keyAndIv = GenerateKeyAndIv(key, 32, 16);
+                var keyAndIv = GenerateKeyAndIv(Key, 32, 16);
                 aes.Key = keyAndIv.Key;
                 aes.IV = keyAndIv.Iv;
 
@@ -62,15 +55,14 @@ namespace EasyMicroservices.Security.Providers.EncriptionProviders
         /// 
         /// </summary>
         /// <param name="data"></param>
-        /// <param name="key"></param>
         /// <returns></returns>
-        public virtual byte[] Encrypt(byte[] data, byte[] key)
+        public override byte[] Encrypt(byte[] data)
         {
             byte[] encryptedData;
 
             using (Aes aes = Aes.Create())
             {
-                var keyAndIv = GenerateKeyAndIv(key, 32, 16);
+                var keyAndIv = GenerateKeyAndIv(Key, 32, 16);
                 aes.Key = keyAndIv.Key;
                 aes.IV = keyAndIv.Iv;
 
@@ -85,14 +77,6 @@ namespace EasyMicroservices.Security.Providers.EncriptionProviders
                 }
             }
             return encryptedData;
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public virtual bool IsSymmetricAlgorithm()
-        {
-            return true;
         }
     }
 }
