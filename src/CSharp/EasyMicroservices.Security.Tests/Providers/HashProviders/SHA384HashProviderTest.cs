@@ -1,4 +1,5 @@
 ﻿using EasyMicroservices.Security.Providers.HashProviders;
+using System.Security.Cryptography;
 using Xunit;
 
 namespace EasyMicroservices.Security.Tests.Providers.HashProviders
@@ -9,11 +10,9 @@ namespace EasyMicroservices.Security.Tests.Providers.HashProviders
         {
         }
 
-        [Theory]
-        [InlineData("d88875db0f77aad8f3d994fe68cd1cc7ec3a4ff14378b7feb991e54784850192145854c36e5a40a0c2e80da2002d7cc8")]
-        public override void ComputeHash_ReturnsExpectedHash(string expectedhashString)
+        public override HashAlgorithm GetHashAlgorithm()
         {
-            base.ComputeHash_ReturnsExpectedHash(expectedhashString);
+            return SHA384.Create();
         }
     }
 }

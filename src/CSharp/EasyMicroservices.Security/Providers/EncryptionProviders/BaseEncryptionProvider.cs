@@ -1,32 +1,36 @@
 ﻿using EasyMicroservices.Security.Interfaces;
 using EasyMicroservices.Security.IO;
+using EasyMicroservices.Security.Models;
 using EasyMicroservices.Utilities.IO;
 using EasyMicroservices.Utilities.IO.Interfaces;
-using System;
 using System.IO;
 using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 
-namespace EasyMicroservices.Security.Providers.SignatureProviders
+namespace EasyMicroservices.Security.Providers.EncryptionProviders
 {
     /// <summary>
     /// 
     /// </summary>
-    public abstract class BaseSignatureProvider : BaseSecurityProvider, ISignatureProvider
+    public abstract class BaseEncryptionProvider : BaseSecurityProvider, IEncryptionProvider
     {
         /// <summary>
         /// 
         /// </summary>
         /// <param name="streamMiddleware"></param>
-        public BaseSignatureProvider(IStreamMiddleware streamMiddleware = default)
+        public BaseEncryptionProvider(IStreamMiddleware streamMiddleware = default)
         {
             InnerStreamMiddleware = streamMiddleware;
-            _provider = new RSACryptoServiceProvider();
         }
         /// <summary>
-        /// 
+        /// salt size must be at least 8 bytes, we will use 16 bytes
         /// </summary>
-        protected readonly RSACryptoServiceProvider _provider;
+        public byte[] Salt { get; set; } = Encoding.Unicode.GetBytes("EasyEasy");
+        /// <summary>
+        /// iterations must be at least 1000, we will use 2000
+        /// </summary>
+        public int Iterations { get; set; } = 2000;
         /// <summary>
         /// 
         /// </summary>
@@ -35,30 +39,37 @@ namespace EasyMicroservices.Security.Providers.SignatureProviders
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="encryptedData"></param>
+        /// <returns></returns>
+        public abstract byte[] Decrypt(byte[] encryptedData);
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        public virtual byte[] SignData(byte[] data)
+        public abstract byte[] Encrypt(byte[] data);
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public virtual bool IsSymmetricAlgorithm()
         {
-#if (NET45)
-            throw new NotImplementedException();
-#else
-            return _provider.SignData(data, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
-#endif
+            return true;
         }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="orginData"></param>
-        /// <param name="signatureData"></param>
+        /// <param name="key"></param>
+        /// <param name="keyByteSize"></param>
+        /// <param name="IvByteSize"></param>
         /// <returns></returns>
-        public virtual bool ValidateSignature(byte[] orginData, byte[] signatureData)
+        public RSAKeyValue GenerateKeyAndIv(byte[] key, int keyByteSize, int IvByteSize)
         {
-#if (NET45)
-            throw new NotImplementedException();
-#else
-            return _provider.VerifyData(orginData, signatureData, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
-#endif
+            using (var pbkdf2 = new Rfc2898DeriveBytes(key, Salt, Iterations))
+            {
+                return new RSAKeyValue(pbkdf2.GetBytes(keyByteSize), pbkdf2.GetBytes(IvByteSize));
+            }
         }
 
         /// <summary>
@@ -67,10 +78,19 @@ namespace EasyMicroservices.Security.Providers.SignatureProviders
         /// <param name="streamWriter"></param>
         /// <param name="data"></param>
         /// <returns></returns>
-        public Task SignDataToStream(Stream streamWriter, byte[] data)
+        public Task EncryptToStream(Stream streamWriter, byte[] data)
         {
             WriteToStream(streamWriter, data);
             return TaskHelper.GetCompletedTask();
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="streamWriter"></param>
+        /// <returns></returns>
+        public Task<byte[]> DecryptFromStream(Stream streamWriter)
+        {
+            return ReadFromStream(streamWriter);
         }
 
         /// <summary>
@@ -101,18 +121,19 @@ namespace EasyMicroservices.Security.Providers.SignatureProviders
         /// <returns></returns>
         public override void WriteToStream(Stream streamWriter, byte[] data)
         {
-            var encrypt = SignData(data);
+            var encrypt = Encrypt(data);
             streamWriter.Write(encrypt, 0, encrypt.Length);
         }
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="streamReader"></param>
+        /// <param name="streamWriter"></param>
         /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
-        public override Task<byte[]> ReadFromStream(Stream streamReader)
+        public override async Task<byte[]> ReadFromStream(Stream streamWriter)
         {
-            throw new NotImplementedException();
+            var allBytes = await streamWriter.StreamToBytesAsync(BufferSize);
+            var decrypt = Decrypt(allBytes);
+            return decrypt;
         }
     }
 }

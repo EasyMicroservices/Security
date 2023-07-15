@@ -1,7 +1,9 @@
 ﻿using EasyMicroservices.Security.Interfaces;
+using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace EasyMicroservices.Security.Tests.Providers.EncriptionProviders
@@ -9,40 +11,65 @@ namespace EasyMicroservices.Security.Tests.Providers.EncriptionProviders
     public abstract class BaseEncryptionProviderTest
     {
         protected readonly IEncryptionProvider _provider;
-        public BaseEncryptionProviderTest(IEncryptionProvider provider)
+        protected readonly IEncryptionProvider _anotherProvider;
+        public BaseEncryptionProviderTest(IEncryptionProvider provider, IEncryptionProvider anotherProvider)
         {
             _provider = provider;
+            _anotherProvider = anotherProvider;
         }
 
+        public static byte[] Key { get; set; } = Encoding.UTF8.GetBytes("MySecurityKey");
+        public static byte[] Key2 { get; set; } = Encoding.UTF8.GetBytes("سلام کلید");
 
-        public virtual void Test_Symmetric_ValidData(string originalDataString, string keyString)
+        [Theory]
+        [InlineData("Hello Easy-MicroService!")]
+        [InlineData("سلام ایزی میکروسرویس")]
+        public virtual void Test_Symmetric_ValidData(string originalDataString)
         {
             //Arrange
-            byte[] key = Encoding.UTF8.GetBytes(keyString);
             byte[] data = Encoding.UTF8.GetBytes(originalDataString);
             // Act
-            var encryptedData = _provider.Encrypt(data, key);
-            var decryptedData = _provider.Decrypt(encryptedData, key);
+            var encryptedData = _provider.Encrypt(data);
+            var decryptedData = _provider.Decrypt(encryptedData);
 
             // Assert
             Assert.Equal(originalDataString, Encoding.UTF8.GetString(decryptedData));
             Assert.True(decryptedData.SequenceEqual(data));
         }
-        public virtual void Test_Symmetric_WithDifferentKey(string originalDataString, string stringKey1, string stringKey2)
+
+        [Theory]
+        [InlineData("Hello Easy-MicroService!")]
+        public virtual void Test_Symmetric_WithDifferentKey(string originalDataString)
         {
             // Arrange           
 
-            var key1 = Encoding.UTF8.GetBytes(stringKey1);
-            var key2 = Encoding.UTF8.GetBytes(stringKey2);
             var data = Encoding.UTF8.GetBytes(originalDataString);
 
             // Act
-            var encryptedData = _provider.Encrypt(data, key1);
+            var encryptedData = _provider.Encrypt(data);
             //convert to array to can use in lambda expersion
             var arrayByte = encryptedData;
             // Assert
-            Assert.ThrowsAny<CryptographicException>(() => _provider.Decrypt(arrayByte, key2));
+            Assert.ThrowsAny<CryptographicException>(() => _anotherProvider.Decrypt(arrayByte));
 
+        }
+
+        [Theory]
+        [InlineData("Hello Easy-MicroService!")]
+        [InlineData("سلام ایزی میکروسرویس")]
+        public virtual async Task Test_Symmetric_StreamData(string originalDataString)
+        {
+            var data = Encoding.UTF8.GetBytes(originalDataString);
+            //Arrange
+            using var stream = new MemoryStream();
+            // Act
+            await _provider.EncryptToStream(stream, data);
+            stream.Seek(0, SeekOrigin.Begin);
+            var decryptedData = await _provider.DecryptFromStream(stream);
+
+            // Assert
+            Assert.Equal(originalDataString, Encoding.UTF8.GetString(decryptedData));
+            Assert.True(decryptedData.SequenceEqual(data));
         }
     }
 }

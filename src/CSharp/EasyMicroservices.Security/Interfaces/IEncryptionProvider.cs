@@ -1,10 +1,14 @@
-﻿namespace EasyMicroservices.Security.Interfaces
+﻿using EasyMicroservices.Utilities.IO.Interfaces;
+using System.IO;
+using System.Threading.Tasks;
+
+namespace EasyMicroservices.Security.Interfaces
 {
     /// <summary>
     /// These are a two-way process to convert your data from
     ///clear byte into crypto-byte and back again.
     /// </summary>
-    public interface IEncryptionProvider
+    public interface IEncryptionProvider : IStreamMiddleware
     {
         /// <summary>
         /// Protection algorithms often use a key.
@@ -24,16 +28,27 @@
         /// Encrypt method.
         /// </summary>
         /// <param name="data">input data that wants to Encrypt</param>
-        /// <param name="key"> your key for Encrypt</param>
         /// <returns>crypto-byte</returns>
-        byte[] Encrypt(byte[] data, byte[] key);
+        byte[] Encrypt(byte[] data);
         /// <summary>
         /// Decrypt method.
         /// </summary>
         /// <param name="encryptedData">encryptedData that wants to Decrypt</param>
-        /// <param name="key">your key for Decrypt</param>
         /// <returns>original byte data</returns>
-        byte[] Decrypt(byte[] encryptedData, byte[] key);
+        byte[] Decrypt(byte[] encryptedData);
+        /// <summary>
+        /// Encrypt to a stream method.
+        /// </summary>
+        /// <param name="streamWriter">stream to write</param>
+        /// <param name="data">input data that wants to Encrypt</param>
+        /// <returns>crypto-byte</returns>
+        Task EncryptToStream(Stream streamWriter, byte[] data);
+        /// <summary>
+        /// decrypt data from stream
+        /// </summary>
+        /// <param name="streamWriter">stream to decrypt</param>
+        /// <returns>decrypted data</returns>
+        Task<byte[]> DecryptFromStream(Stream streamWriter);
     }
 
 }

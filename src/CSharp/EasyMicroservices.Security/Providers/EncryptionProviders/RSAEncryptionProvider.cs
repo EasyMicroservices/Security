@@ -1,7 +1,7 @@
 ﻿using EasyMicroservices.Security.Interfaces;
 using System.Security.Cryptography;
 
-namespace EasyMicroservices.Security.Providers.EncriptionProviders
+namespace EasyMicroservices.Security.Providers.EncryptionProviders
 {
     /// <summary>
     /// 
@@ -16,6 +16,7 @@ namespace EasyMicroservices.Security.Providers.EncriptionProviders
         {
             _provider = RSA.Create();
         }
+
         /// <summary>
         /// 
         /// </summary>
@@ -27,13 +28,13 @@ namespace EasyMicroservices.Security.Providers.EncriptionProviders
             _provider.FromXmlString(publicKey);
             _provider.FromXmlString(privateKey);
         }
+
         /// <summary>
         /// 
         /// </summary>
         /// <param name="data"></param>
-        /// <param name="key"></param>
         /// <returns></returns>
-        public override byte[] Encrypt(byte[] data, byte[] key)
+        public override byte[] Encrypt(byte[] data)
         {
 #if(NET45 || NET452)
             return _provider.EncryptValue(data);
@@ -41,13 +42,13 @@ namespace EasyMicroservices.Security.Providers.EncriptionProviders
             return _provider.Encrypt(data, RSAEncryptionPadding.Pkcs1);
 #endif
         }
+
         /// <summary>
         /// 
         /// </summary>
         /// <param name="encryptedData"></param>
-        /// <param name="key"></param>
         /// <returns></returns>
-        public override byte[] Decrypt(byte[] encryptedData, byte[] key)
+        public override byte[] Decrypt(byte[] encryptedData)
         {
 #if (NET45|| NET452)
             return _provider.DecryptValue(encryptedData);

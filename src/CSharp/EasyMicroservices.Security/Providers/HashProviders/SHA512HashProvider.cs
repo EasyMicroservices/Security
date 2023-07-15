@@ -23,6 +23,5 @@ namespace EasyMicroservices.Security.Providers.HashProviders
         /// </summary>
         /// <returns></returns>
         public override int HashByteSize() => 64;
-
     }
 }

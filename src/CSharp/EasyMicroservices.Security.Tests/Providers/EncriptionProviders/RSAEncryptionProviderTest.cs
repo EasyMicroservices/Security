@@ -1,5 +1,5 @@
-﻿using EasyMicroservices.Security.Providers.EncriptionProviders;
-using Xunit;
+﻿using EasyMicroservices.Security.Providers.EncryptionProviders;
+using System.Threading.Tasks;
 
 namespace EasyMicroservices.Security.Tests.Providers.EncriptionProviders
 {
@@ -9,17 +9,23 @@ namespace EasyMicroservices.Security.Tests.Providers.EncriptionProviders
 
         static string publicKey = "<RSAKeyValue><Exponent>AQAB</Exponent><Modulus>rvH+oW61xbXYQvg+GInL5B3KPamNuxYWke/UaOxQAsAeuvtJ+5AxfqKIkh1UY9SwAhb1r13wBG8PhM6ARqKNt9XueZucZTCvtGc6XNhAZlOwsNl1fKneHQKobriKJfkF3eMPKY2Dz3Ws1SEUQ5SyAF6hJrarB1WG08eMuqILGKB5Ec/VbO/sN5qZ0uREicbDEvJAr7b+9Nn/LGQ4hH8Ej4RLN/xydwK9jdeAQz9qjE5lx5yJE5oP0Czvkr10u+Yc4v/s17gJFleCw7A3uEep6X02ENYdu33mv2z8MkijyxltCfVtAUyTXhK3Q/H+v6eWkpaPxdQuXX+2vUcYG4qhNw==</Modulus></RSAKeyValue>";
 
-        public RSAEncryptionProviderTest() : base(new RSAEncryptionProvider(publicKey, privateKey))
+        public RSAEncryptionProviderTest() : base(new RSAEncryptionProvider(publicKey, privateKey), null)
         {
         }
-#if(!NET452)
-        [Theory]
-        [InlineData("Hello Easy-MicroService!", "MySecurityKey")]
-        [InlineData("سلام ایزی میکروسرویس", "کلید امنیتی")]
-        public override void Test_Symmetric_ValidData(string originalDataString, string keyString)
+#if(NET452)
+        public override void Test_Symmetric_ValidData(string originalDataString)
         {
-            base.Test_Symmetric_ValidData(originalDataString, keyString);
+
+        }
+
+        public override Task Test_Symmetric_StreamData(string originalDataString)
+        {
+            return TaskHelper.GetCompletedTask();
         }
 #endif
+        public override void Test_Symmetric_WithDifferentKey(string originalDataString)
+        {
+
+        }
     }
 }
