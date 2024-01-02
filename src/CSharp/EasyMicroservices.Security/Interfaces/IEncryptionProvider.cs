@@ -8,7 +8,7 @@ namespace EasyMicroservices.Security.Interfaces
     /// These are a two-way process to convert your data from
     ///clear byte into crypto-byte and back again.
     /// </summary>
-    public interface IEncryptionProvider : IStreamMiddleware
+    public interface IEncryptionProvider : IStreamMiddleware, ISecurityProvider
     {
         /// <summary>
         /// Protection algorithms often use a key.

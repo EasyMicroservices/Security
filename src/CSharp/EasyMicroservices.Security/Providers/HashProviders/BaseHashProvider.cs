@@ -32,6 +32,16 @@ namespace EasyMicroservices.Security.Providers.HashProviders
         /// </summary>
         /// <param name="buffer"></param>
         /// <returns></returns>
+        public override byte[] Compute(byte[] buffer)
+        {
+            return ComputeHash(buffer);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="buffer"></param>
+        /// <returns></returns>
         public virtual byte[] ComputeHash(byte[] buffer)
         {
             using (var hashAlgorithm = GetHashAlgorithm())
@@ -101,7 +111,7 @@ namespace EasyMicroservices.Security.Providers.HashProviders
         /// <exception cref="NotImplementedException"></exception>
         public override Task<byte[]> ReadFromStream(Stream streamReader)
         {
-            throw new NotImplementedException();
+            return streamReader.StreamToBytesAsync(1024);
         }
     }
 }

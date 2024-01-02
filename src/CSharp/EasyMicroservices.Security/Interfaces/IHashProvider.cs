@@ -8,7 +8,7 @@ namespace EasyMicroservices.Security.Interfaces
     /// This is a one-way process to generate a hash value to securely store passwords,
     /// or can be used to detect malicious changes or corruption of your data
     /// </summary>
-    public interface IHashProvider : IStreamMiddleware
+    public interface IHashProvider : IStreamMiddleware, ISecurityProvider
     {
         /// <summary>
         /// 

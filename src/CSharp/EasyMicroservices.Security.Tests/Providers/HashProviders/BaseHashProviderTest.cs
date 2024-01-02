@@ -33,6 +33,7 @@ namespace EasyMicroservices.Security.Tests.Providers.HashProviders
             Assert.Equal(hash.Length, hash.Length);
             Assert.Equal(BitConverter.ToString(realHash).Replace("-", "").ToLower(), BitConverter.ToString(hash).Replace("-", "").ToLower());
             Assert.True(hash.SequenceEqual(realHash));
+            Assert.True(hash.SequenceEqual(_provider.Compute(bytes)));
         }
 
         [Theory]
@@ -51,6 +52,7 @@ namespace EasyMicroservices.Security.Tests.Providers.HashProviders
             Assert.Equal(hash.Length, hash.Length);
             Assert.Equal(BitConverter.ToString(realHash).Replace("-", "").ToLower(), BitConverter.ToString(hash).Replace("-", "").ToLower());
             Assert.True(hash.SequenceEqual(realHash));
+            Assert.True(hash.SequenceEqual(_provider.Compute(bytes)));
         }
     }
 }

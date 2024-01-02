@@ -48,6 +48,17 @@ namespace EasyMicroservices.Security.Providers.EncryptionProviders
         /// <param name="data"></param>
         /// <returns></returns>
         public abstract byte[] Encrypt(byte[] data);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="buffer"></param>
+        /// <returns></returns>
+        public override byte[] Compute(byte[] buffer)
+        {
+            return Encrypt(buffer);
+        }
+
         /// <summary>
         /// 
         /// </summary>

@@ -51,7 +51,7 @@ namespace EasyMicroservices.Security.Tests.Providers.EncriptionProviders
             var arrayByte = encryptedData;
             // Assert
             Assert.ThrowsAny<CryptographicException>(() => _anotherProvider.Decrypt(arrayByte));
-
+            Assert.True(encryptedData.SequenceEqual(_provider.Compute(data)));
         }
 
         [Theory]
