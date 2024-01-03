@@ -45,6 +45,16 @@ namespace EasyMicroservices.Security.Providers
         {
            return  string.Concat(Compute(buffer)
                .Select(item => item.ToString("x2")));
+        }  
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public string ComputeHexString(string input)
+        {
+            return ComputeHexString(Encoding.UTF8.GetBytes(input));
         }
     }
 }
