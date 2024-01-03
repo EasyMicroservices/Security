@@ -1,4 +1,7 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace EasyMicroservices.Security.Providers
@@ -6,7 +9,7 @@ namespace EasyMicroservices.Security.Providers
     /// <summary>
     /// 
     /// </summary>
-    public abstract class BaseSecurityProvider
+    public abstract class BaseSecurityProvider : ISecurityProvider
     {
         /// <summary>
         /// 
@@ -25,5 +28,23 @@ namespace EasyMicroservices.Security.Providers
         /// <param name="streamReader"></param>
         /// <returns></returns>
         public abstract Task<byte[]> ReadFromStream(Stream streamReader);
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="buffer"></param>
+        /// <returns></returns>
+        public abstract byte[] Compute(byte[] buffer);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="buffer"></param>
+        /// <returns></returns>
+        /// <exception cref="System.NotImplementedException"></exception>
+        public string ComputeHexString(byte[] buffer)
+        {
+           return  string.Concat(Compute(buffer)
+               .Select(item => item.ToString("x2")));
+        }
     }
 }

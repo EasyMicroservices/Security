@@ -35,6 +35,16 @@ namespace EasyMicroservices.Security.Providers.SignatureProviders
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="buffer"></param>
+        /// <returns></returns>
+        public override byte[] Compute(byte[] buffer)
+        {
+            return SignData(buffer);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
         public virtual byte[] SignData(byte[] data)

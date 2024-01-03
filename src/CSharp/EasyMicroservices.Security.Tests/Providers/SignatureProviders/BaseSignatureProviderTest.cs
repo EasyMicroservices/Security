@@ -1,5 +1,6 @@
 ﻿using EasyMicroservices.Security.Interfaces;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
@@ -29,6 +30,7 @@ namespace EasyMicroservices.Security.Tests.Providers.SignatureProviders
 
             // assert
             Assert.True(isValid);
+            Assert.True(signature.SequenceEqual(_provider.Compute(data)));
         }
 
         [Theory]
@@ -46,6 +48,7 @@ namespace EasyMicroservices.Security.Tests.Providers.SignatureProviders
 
             // assert
             Assert.True(isValid);
+            Assert.True(signature.SequenceEqual(_provider.Compute(data)));
         }
 
         [Theory]
@@ -62,7 +65,7 @@ namespace EasyMicroservices.Security.Tests.Providers.SignatureProviders
 
             // assert
             Assert.False(isValid);
+            Assert.True(signature.SequenceEqual(_provider.Compute(data)));
         }
-
     }
 }

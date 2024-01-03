@@ -9,7 +9,7 @@ namespace EasyMicroservices.Security.Interfaces
     ///trust by validating a signature that has been applied to some data against someone's
     ///public key.
     /// </summary>
-    public interface ISignatureProvider : IStreamMiddleware
+    public interface ISignatureProvider : IStreamMiddleware, ISecurityProvider
     {
         /// <summary>
         /// 

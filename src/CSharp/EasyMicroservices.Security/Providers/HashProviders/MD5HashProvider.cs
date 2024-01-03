@@ -1,5 +1,6 @@
 ﻿using EasyMicroservices.Security.Interfaces;
 using System.Security.Cryptography;
+using EasyMicroservices.Utilities.IO.Interfaces;
 
 namespace EasyMicroservices.Security.Providers.HashProviders
 {
@@ -8,6 +9,15 @@ namespace EasyMicroservices.Security.Providers.HashProviders
     /// </summary>
     public class MD5HashProvider : BaseHashProvider, IHashProvider
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="streamMiddleware"></param>
+        public MD5HashProvider(IStreamMiddleware streamMiddleware = default) : base(streamMiddleware)
+        {
+
+        }
+
         /// <summary>
         /// 
         /// </summary>
